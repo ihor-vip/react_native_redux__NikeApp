@@ -1,10 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import products from './src/data/products'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <FlatList
+          data={products}
+          renderItem={({item}) => (
+              <Image source={{uri: item.image}} style={styles.image} />
+          )}
+      />
+
       <StatusBar style="auto" />
     </View>
   );
@@ -17,4 +24,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  image: {
+    width: "100%",
+    aspectRatio: 1
+  }
 });
