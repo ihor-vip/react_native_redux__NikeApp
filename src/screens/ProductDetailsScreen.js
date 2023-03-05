@@ -1,27 +1,39 @@
-import {StyleSheet, View, Image, FlatList, useWindowDimensions, ScrollView, Pressable, Text} from "react-native";
-import products from "../data/products";
+import {
+    StyleSheet,
+    View,
+    Image,
+    FlatList,
+    useWindowDimensions,
+    Text,
+    ScrollView,
+    Pressable,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {cartSlice} from '../store/cartSlice';
 
 const ProductDetailsScreen = () => {
-    const product = products[0];
+    const product = useSelector((state) => state.products.selectedProduct);
+    const dispatch = useDispatch();
 
     const {width} = useWindowDimensions();
 
     const addToCart = () => {
-        console.warn('Add to cart')
-    }
+        dispatch(cartSlice.actions.addCartItem({product}));
+    };
 
     return (
         <View>
             <ScrollView>
                 {/* Image Carousel */}
-                <FlatList data={product.images} renderItem={({item}) => (
-                    <Image source={{uri: item}} style={{width, aspectRatio: 1}}/>
-                )}
-                          horizontal
-                          showsHorizontalScrollIndicator={false}
-                          pagingEnabled
+                <FlatList
+                    data={product.images}
+                    renderItem={({item}) => (
+                        <Image source={{uri: item}} style={{width, aspectRatio: 1}}/>
+                    )}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled
                 />
-
                 <View style={{padding: 20}}>
                     {/* Title */}
                     <Text style={styles.title}>{product.name}</Text>
@@ -39,10 +51,9 @@ const ProductDetailsScreen = () => {
                 <Text style={styles.buttonText}>Add to cart</Text>
             </Pressable>
 
-            {/* Navigation icon */}
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     title: {
@@ -61,6 +72,7 @@ const styles = StyleSheet.create({
         lineHeight: 30,
         fontWeight: '300',
     },
+
     button: {
         position: 'absolute',
         backgroundColor: 'black',
